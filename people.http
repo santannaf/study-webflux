@@ -1,0 +1,27 @@
+### GET people by ID
+GET http://localhost:8080/pessoas/5dd47d47-c50e-4959-aaf5-67984e4cc2d3
+###
+
+### Benchmark
+GET http://localhost:8080/benchmark
+###
+
+
+### pessoas:id:4cbcec8e-4e60-4c68-b7c7-5e4bac899e68 este não existe
+### pessoas:id:7fab5fc0-ce0e-4987-9835-f56d15f5ffde
+
+### GET people by ID
+GET http://localhost:8080/pessoas/7fab5fc0-ce0e-4987-9835-f56d15f5ffde
+###
+
+
+POST http://localhost:8080/pessoas
+Content-Type: application/json
+
+{
+    "apelido" : "josé",
+    "nome" : "José Roberto",
+    "nascimento" : "2000-10-01",
+    "stack" : ["C#", "Node", "Oracle"]
+}
+###
