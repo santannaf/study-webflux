@@ -14,9 +14,13 @@ import org.springframework.web.client.RestClient
 class BenchmarkController(
     private val restClient: RestClient = RestClient.builder().baseUrl("http://localhost:8080").build()
 ) {
+    companion object {
+        const val REQUEST_COUNT = 250_000
+        const val ONE_DOUS = 1000.00
+    }
+
     @GetMapping
     fun runBenchmark(): String {
-        val requestCount = 250_000
 
         val result = StringBuilder()
         result.append("\n=== VIRTUAL THREADS PERFORMANCE BENCHMARK ===\n")
@@ -24,14 +28,14 @@ class BenchmarkController(
         result.append("===========================================\n\n")
 
         result.append("--- STARTING BENCHMARK: ")
-            .append(requestCount)
+            .append(REQUEST_COUNT)
             .append(" processing requests ---\n")
 
         return try {
             var executor = Executors.newVirtualThreadPerTaskExecutor()
             val start = Instant.now()
 
-            val futures: Array<CompletableFuture<*>> = Array(requestCount) { i ->
+            val futures: Array<CompletableFuture<*>> = Array(REQUEST_COUNT) { i ->
                 CompletableFuture.runAsync({
                     try {
                         restClient.get()
@@ -51,15 +55,15 @@ class BenchmarkController(
             val duration = Duration.between(start, end)
 
             // Calculate statistics
-            val totalTimeSeconds = duration.toMillis() / 1000.0
-            val requestsPerSecond = requestCount / totalTimeSeconds
-            val avgTimePerRequest = (duration.toMillis() / requestCount.toDouble())
+            val totalTimeSeconds = duration.toMillis() / ONE_DOUS
+            val requestsPerSecond = REQUEST_COUNT / totalTimeSeconds
+            val avgTimePerRequest = (duration.toMillis() / REQUEST_COUNT.toDouble())
 
             // Format results for display
             result.append("\n╔════════════ BENCHMARK RESULTS ════════════╗\n")
             result.append("║ JDK Version:           ")
                 .append(String.format("%-18s", System.getProperty("java.version"))).append(" ║\n")
-            result.append("║ Total Requests:        ").append(String.format("%-18s", requestCount)).append(" ║\n")
+            result.append("║ Total Requests:        ").append(String.format("%-18s", REQUEST_COUNT)).append(" ║\n")
             result.append("║ Total Time:            ")
                 .append(String.format("%-18s", String.format("%.3f seconds", totalTimeSeconds))).append(" ║\n")
             result.append("║ Avg Time Per Request:  ")
@@ -71,7 +75,7 @@ class BenchmarkController(
             result.toString()
         } catch (error: Exception) {
             result.append("Benchmark failed: ").append(error.message)
-            error.printStackTrace()
+//            error.printStackTrace()
             result.toString()
         }
     }

@@ -16,3 +16,7 @@ tasks.withType(ScalaCompile).configureEach {
         jvmArgs = ['-Xss100m']
     }
 }
+
+bootJar {
+    enabled = false
+}

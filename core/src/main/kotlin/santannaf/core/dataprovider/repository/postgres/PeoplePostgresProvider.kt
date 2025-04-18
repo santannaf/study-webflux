@@ -20,7 +20,7 @@ class PeoplePostgresProvider(
     private val observationRegistry: ObservationRegistry
 ) : FetchPeopleProvider, FetchCachePeopleProvider, SavePeopleProvider {
 
-    private fun buildPeople(row: Row, rowMetadata: RowMetadata): People {
+    private fun buildPeople(row: Row): People {
         return People(
             id = row["id"] as UUID,
             nickname = row["nickname"] as String,
@@ -45,7 +45,7 @@ class PeoplePostgresProvider(
             )
             .fetch()
             .rowsUpdated()
-            .map<People> { people }
+            .map { people }
     }
 
     override fun saveInCache(triple: Triple<UUID, String, String>): Mono<UUID> {
@@ -55,13 +55,13 @@ class PeoplePostgresProvider(
 //            .bind(3, triple.third)
             .fetch()
             .rowsUpdated()
-            .map<UUID> { triple.first }
+            .map { triple.first }
     }
 
     override fun fetchById(id: UUID): Mono<People> {
         return template.databaseClient.sql("select id, apelido as nickname, nome as name, nascimento as birthday, stack from pessoas where id = :id")
             .bind("id", id)
-            .map(::buildPeople)
+            .map { row: Row, _: RowMetadata -> buildPeople(row) }
             .one()
     }
 
@@ -80,10 +80,9 @@ class PeoplePostgresProvider(
     override fun fetchCacheByKey(key: String): Mono<String> {
         return template.databaseClient.sql("select data from cache where key = :key")
             .bind("key", key)
-            .mapValue<String>(String::class.java)
+            .mapValue(String::class.java)
             .one()
     }
-
 
     private fun <T> observeMono(
         observationRegistry: ObservationRegistry,
