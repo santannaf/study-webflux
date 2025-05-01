@@ -8,6 +8,7 @@ import java.time.LocalDate
 import java.util.UUID
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
 import org.springframework.stereotype.Repository
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import santannaf.core.entity.People
 import santannaf.core.provider.FetchCachePeopleProvider
@@ -52,7 +53,6 @@ class PeoplePostgresProvider(
         return template.databaseClient.sql("insert into cache (key,data) values (:key,:data::jsonb) on conflict (key) do update set data = :data::jsonb")
             .bind("key", triple.second)
             .bind("data", triple.third)
-//            .bind(3, triple.third)
             .fetch()
             .rowsUpdated()
             .map { triple.first }
@@ -63,6 +63,13 @@ class PeoplePostgresProvider(
             .bind("id", id)
             .map { row: Row, _: RowMetadata -> buildPeople(row) }
             .one()
+    }
+
+    override fun fetchByTerm(q: String): Flux<Int?> {
+        return template.databaseClient.sql("select 1 from pessoas where busca ilike :q limit 50")
+            .bind("q", q)
+            .map { row: Row, _: RowMetadata -> row.get(0, Int::class.java) }
+            .all()
     }
 
     override fun fetchByIdWithObservability(id: UUID): Mono<People> {

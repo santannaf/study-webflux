@@ -10,7 +10,7 @@ plugins {
     kotlin("jvm") version "2.0.21"
     kotlin("plugin.spring") version "2.0.21"
     kotlin("plugin.serialization") version "2.0.21" apply false
-    id("org.springframework.boot") version "3.4.4"
+    id("org.springframework.boot") version "3.4.5"
     id("io.spring.dependency-management") version "1.1.7"
     id("org.graalvm.buildtools.native") version "0.10.6" apply false
     id("io.gitlab.arturbosch.detekt") version "1.23.8"
@@ -40,6 +40,14 @@ subprojects {
         }
     }
 
+    dependencyManagement {
+        imports {
+            mavenBom("io.opentelemetry:opentelemetry-bom:1.48.0")
+            mavenBom("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom:2.14.0")
+            mavenBom("io.micrometer:micrometer-tracing-bom:1.4.4")
+        }
+    }
+
     dependencies {
         // Spring Boot Web
         implementation("org.springframework.boot:spring-boot-starter-webflux")
@@ -50,6 +58,14 @@ subprojects {
         implementation("org.jetbrains.kotlin:kotlin-reflect")
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 
+        // Metrics and Traces
+//        implementation("io.micrometer:micrometer-registry-otlp")
+//        implementation("io.micrometer:micrometer-tracing-bridge-otel")
+//        implementation("io.micrometer:micrometer-tracing")
+//        implementation("io.opentelemetry:opentelemetry-exporter-otlp")
+//
+//        // Instrumentation Spring Boot Autoconfigure
+//        implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter")
 
         // Spring R2DBC
         implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
