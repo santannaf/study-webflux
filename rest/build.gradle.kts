@@ -21,13 +21,13 @@ dependencies {
     implementation(project(":core"))
 
     // Metrics
-    implementation("io.micrometer:micrometer-registry-otlp")
-    implementation("io.micrometer:micrometer-tracing-bridge-otel")
-    implementation("io.micrometer:micrometer-tracing")
-    implementation("io.opentelemetry:opentelemetry-exporter-otlp")
-
-    // Instrumentation Spring Boot Autoconfigure
-    implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter")
+//    implementation("io.micrometer:micrometer-registry-otlp")
+//    implementation("io.micrometer:micrometer-tracing-bridge-otel")
+//    implementation("io.micrometer:micrometer-tracing")
+//    implementation("io.opentelemetry:opentelemetry-exporter-otlp")
+//
+//    // Instrumentation Spring Boot Autoconfigure
+//    implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter")
 
     // Traces and some metrics
 //    implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter")

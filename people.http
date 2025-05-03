@@ -11,7 +11,7 @@ GET http://localhost:8080/benchmark
 ### pessoas:id:7fab5fc0-ce0e-4987-9835-f56d15f5ffde
 
 ### GET people by ID
-GET http://localhost:8080/pessoas/7fab5fc0-ce0e-4987-9835-f56d15f5ffde
+GET http://localhost:8080/pessoas/e9838573-4331-4e50-b580-3a8c843a5b06
 ###
 
 
