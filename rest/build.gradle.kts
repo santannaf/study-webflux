@@ -8,13 +8,13 @@ plugins {
 
 group = "santannaf.customer.rest"
 
-//dependencyManagement {
-//    imports {
-//        mavenBom("io.opentelemetry:opentelemetry-bom:1.48.0")
-//        mavenBom("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom:2.14.0")
-//        mavenBom("io.micrometer:micrometer-tracing-bom:1.4.4")
-//    }
-//}
+dependencyManagement {
+    imports {
+        mavenBom("io.opentelemetry:opentelemetry-bom:1.48.0")
+        mavenBom("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom:2.14.0")
+        mavenBom("io.micrometer:micrometer-tracing-bom:1.4.4")
+    }
+}
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -25,8 +25,8 @@ dependencies {
 //    implementation("io.micrometer:micrometer-tracing-bridge-otel")
 //    implementation("io.micrometer:micrometer-tracing")
 //    implementation("io.opentelemetry:opentelemetry-exporter-otlp")
-//
-//    // Instrumentation Spring Boot Autoconfigure
+
+    // Instrumentation Spring Boot Autoconfigure
 //    implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter")
 
     // Traces and some metrics

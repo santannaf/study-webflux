@@ -15,7 +15,7 @@ class BenchmarkController(
     private val restClient: RestClient = RestClient.builder().baseUrl("http://localhost:8080").build()
 ) {
     companion object {
-        const val REQUEST_COUNT = 250_000
+        const val REQUEST_COUNT = 200_000
         const val ONE_DOUS = 1000.00
     }
 
@@ -32,14 +32,14 @@ class BenchmarkController(
             .append(" processing requests ---\n")
 
         return try {
-            var executor = Executors.newVirtualThreadPerTaskExecutor()
+            val executor = Executors.newVirtualThreadPerTaskExecutor()
             val start = Instant.now()
 
             val futures: Array<CompletableFuture<*>> = Array(REQUEST_COUNT) { i ->
                 CompletableFuture.runAsync({
                     try {
                         restClient.get()
-                            .uri("/pessoas/920c25cb-2431-4f59-85a8-42ab8f6255d2")
+                            .uri("/pessoas/8b5f1337-58a7-4fa9-ba82-ded5af7b8c9c")
                             .retrieve()
                             .toEntity(String::class.java)
                     } catch (_: Exception) {

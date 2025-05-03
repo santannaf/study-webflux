@@ -50,6 +50,14 @@ class StressSimulation extends Simulation {
                         .check(status.is(400))
             )
 
+    private val buscaPessoasCustom = scenario("Busca Válida de Pessoas")
+            .feed(tsv("rinha_public_pessoas.tsv").circular())
+            .exec(
+                http("busca válida")
+                        .get("/pessoas/#{id}")
+                // qq resposta na faixa 2XX tá safe
+            )
+
     setUp(
         criacaoEConsultaPessoas.inject(
             constantUsersPerSec(2).during(10.seconds), // warm up
@@ -66,6 +74,11 @@ class StressSimulation extends Simulation {
             constantUsersPerSec(2).during(25.seconds), // warm up
 
             rampUsersPerSec(6).to(40).during(3.minutes) // lezzz go!!!
-        )
+        ),
+//                buscaPessoasCustom.inject(
+//                    constantUsersPerSec(2).during(25.seconds), // warm up
+//
+//                    rampUsersPerSec(6).to(600).during(3.minutes) // lezzz go!!!
+//                )
     ).protocols(protocol)
 }

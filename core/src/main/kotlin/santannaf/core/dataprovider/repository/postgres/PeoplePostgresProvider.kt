@@ -46,7 +46,7 @@ class PeoplePostgresProvider(
             )
             .fetch()
             .rowsUpdated()
-            .map { people }
+            .thenReturn(people)
     }
 
     override fun saveInCache(triple: Triple<UUID, String, String>): Mono<UUID> {
@@ -55,7 +55,7 @@ class PeoplePostgresProvider(
             .bind("data", triple.third)
             .fetch()
             .rowsUpdated()
-            .map { triple.first }
+            .thenReturn(triple.first)
     }
 
     override fun fetchById(id: UUID): Mono<People> {
