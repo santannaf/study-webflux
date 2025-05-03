@@ -5,11 +5,12 @@ COPY . .
 #COPY build.gradle.kts .
 #COPY settings.gradle.kts .
 #RUN gradle -p rest clean build && gradle -p rest nativeCompile
-RUN ./gradlew -p rest nativeCompile
+#RUN #./gradlew -p rest nativeCompile
+RUN ./gradlew clean build
 
-FROM container-registry.oracle.com/os/oraclelinux:9-slim
-RUN groupadd graalvm && useradd -r -g graalvm app_user
-COPY --from=build --chown=app_user:graalvm /project/build/native/nativeCompile/app app
-EXPOSE 8080
-USER app_user
-ENTRYPOINT ["/app", "-Xms64m", "-Xmx128m"]
+#FROM container-registry.oracle.com/os/oraclelinux:9-slim
+#RUN groupadd graalvm && useradd -r -g graalvm app_user
+#COPY --from=build --chown=app_user:graalvm /project/build/native/nativeCompile/app app
+#EXPOSE 8080
+#USER app_user
+#ENTRYPOINT ["/app", "-Xms64m", "-Xmx128m"]
