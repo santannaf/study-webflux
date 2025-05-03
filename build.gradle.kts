@@ -126,3 +126,7 @@ detekt {
     basePath = "$projectDir"
     autoCorrect = true
 }
+
+tasks.withType<Test>().configureEach {
+    maxParallelForks = (Runtime.getRuntime().availableProcessors() / 2).coerceAtLeast(1)
+}
