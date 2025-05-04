@@ -24,9 +24,9 @@ class PeoplePostgresProvider(
     private fun buildPeople(row: Row): People {
         return People(
             id = row["id"] as UUID,
-            nickname = row["nickname"] as String,
-            name = row["name"] as String,
-            birthday = row["birthday"] as LocalDate,
+            nickname = row["apelido"] as String,
+            name = row["nome"] as String,
+            birthday = row["nascimento"] as LocalDate,
             stack = (row["stack"] as? Array<*>)?.filterIsInstance<String>()?.toTypedArray() ?: emptyArray()
         )
     }
@@ -59,7 +59,7 @@ class PeoplePostgresProvider(
     }
 
     override fun fetchById(id: UUID): Mono<People> {
-        return template.databaseClient.sql("select id, apelido as nickname, nome as name, nascimento as birthday, stack from pessoas where id = :id")
+        return template.databaseClient.sql("select id, apelido, nome, nascimento, stack from pessoas where id = :id")
             .bind("id", id)
             .map { row: Row, _: RowMetadata -> buildPeople(row) }
             .one()

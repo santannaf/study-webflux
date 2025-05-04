@@ -10,6 +10,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.core.scheduler.Schedulers
 import santannaf.core.entity.People
+import santannaf.core.exception.PeopleNotFoundException
 import santannaf.core.provider.FetchCachePeopleProvider
 import santannaf.core.provider.FetchPeopleProvider
 import santannaf.core.provider.SavePeopleProvider
@@ -28,7 +29,7 @@ class FetchPeopleUseCase(
             .map { id -> "pessoas:id:$id" }
             .flatMap(fetchCacheProvider::fetchCacheByKey)
             .flatMap { json ->
-                Mono.fromCallable<People> {
+                Mono.fromCallable {
                     jsonMapper.readValue(json, People::class.java)
                 }.subscribeOn(Schedulers.parallel())
             }
@@ -36,13 +37,9 @@ class FetchPeopleUseCase(
             .switchIfEmpty(
                 Mono.fromCallable { id }
                     .flatMap(fetchProvider::fetchById)
-                    .switchIfEmpty(
-                        Mono.fromRunnable<People> { }.then(Mono.empty())
-                    )
+                    .switchIfEmpty(Mono.error(PeopleNotFoundException()))
             )
-            .onErrorResume {
-                Mono.error(it)
-            }
+            .onErrorResume { Mono.error(it) }
     }
 
     fun fetchPeopleByTerm(term: String): Flux<String?> {
@@ -52,7 +49,7 @@ class FetchPeopleUseCase(
             .switchIfEmpty(
                 Mono.fromCallable { "%$term%" }
                     .flatMapMany(fetchProvider::fetchByTerm)
-                    .switchIfEmpty(Mono.just(1))
+                    .switchIfEmpty(Mono.empty())
                     .publishOn(Schedulers.parallel())
                     .map {
                         Triple(
@@ -65,8 +62,6 @@ class FetchPeopleUseCase(
                     .flatMap(saveProvider::saveInCache)
                     .map { it.toString() }
             )
-            .onErrorResume {
-                Mono.error(it)
-            }
+            .onErrorResume { Mono.error(it) }
     }
 }

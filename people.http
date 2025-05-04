@@ -6,12 +6,13 @@ GET http://localhost:8080/pessoas/5dd47d47-c50e-4959-aaf5-67984e4cc2d3
 GET http://localhost:8080/benchmark
 ###
 
-
 ### pessoas:id:4cbcec8e-4e60-4c68-b7c7-5e4bac899e68 este não existe
 ### pessoas:id:7fab5fc0-ce0e-4987-9835-f56d15f5ffde
 
+#1c9e2172-e64d-45c5-ad00-0982915bf6fe
+
 ### GET people by ID
-GET http://localhost:8080/pessoas/2139b909-c51f-44bb-8b70-0f380c23586c
+GET http://localhost:9999/pessoas/e82b32e8-7931-4d7f-a8c9-787a1446d338
 ###
 
 
@@ -27,4 +28,4 @@ Content-Type: application/json
 ###
 
 
-GET http://localhost:8080/pessoas?t=ZVx
+GET http://localhost:9999/pessoas?t=C
