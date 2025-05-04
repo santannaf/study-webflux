@@ -1,0 +1,10 @@
+FROM ghcr.io/graalvm/graalvm-ce:21 as builder
+
+RUN gu install native-image
+
+WORKDIR /app
+
+COPY . .
+
+RUN chmod +x ./gradlew &&\
+   ./gradlew nativeCompile

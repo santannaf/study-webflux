@@ -1,16 +1,30 @@
-#FROM gradle:8.12.1-jdk21-graal AS build
-FROM gradle:8.13-jdk21-graal AS build
-WORKDIR /project
-COPY . .
-#COPY build.gradle.kts .
-#COPY settings.gradle.kts .
-#RUN gradle -p rest clean build && gradle -p rest nativeCompile
-#RUN #./gradlew -p rest nativeCompile
-RUN ./gradlew clean build
+FROM ghcr.io/graalvm/graalvm-ce:21 as builder
 
-#FROM container-registry.oracle.com/os/oraclelinux:9-slim
-#RUN groupadd graalvm && useradd -r -g graalvm app_user
-#COPY --from=build --chown=app_user:graalvm /project/build/native/nativeCompile/app app
-#EXPOSE 8080
-#USER app_user
-#ENTRYPOINT ["/app", "-Xms64m", "-Xmx128m"]
+RUN gu install native-image
+
+WORKDIR /app
+
+COPY . .
+
+RUN chmod +x ./gradlew &&\
+   ./gradlew nativeCompile
+
+
+FROM alpine:latest
+
+RUN apk --no-cache add ca-certificates wget && \
+    wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
+    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.28-r0/glibc-2.28-r0.apk && \
+    apk add --force-overwrite glibc-2.28-r0.apk && \
+    rm glibc-2.28-r0.apk
+
+ENV LD_LIBRARY_PATH="/usr/glibc-compact/lib"
+ENV PATH="/usr/glibc-compact/bin:$PATH"
+
+COPY --from=builder /app/build/native/nativeCompile/meuapp /app/meuapp
+
+RUN chmod +x /app/meuapp
+
+WORKDIR /app
+
+CMD ["./meuapp"]
