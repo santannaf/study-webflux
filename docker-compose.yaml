@@ -36,67 +36,67 @@ services:
 #    depends_on:
 #      - postgres
 
-  api01: &api
-    image: thalessantanna/customer:latest
-    hostname: api01
-    container_name: api01
-    environment:
-      - VIRTUAL_THREADS_ENABLED=true
-      - SERVER_HTTP_CONN_TIMEOUT=500
-      - SERVER_SCHEDULING_THREAD_POOL_SIZE=5
-      - PORT=80
-      - DB_POOL_INITIAL_SIZE=10
-      - DB_POOL_MAX_SIZE=10
-      - DB_POOL_MAX_LIFETIME=2000000
-      - DB_HOST=postgres
-      - DB_DATABASE=rinha
-      - DB_USER=rinha
-      - DB_PASSWORD=rinha
-    expose:
-      - "80"
-    depends_on:
-      - postgres
-    deploy:
-      resources:
-        limits:
-          cpus: "0.35"
-          memory: 500MB
-
-  api02:
-    <<: *api
-    hostname: api02
-    container_name: api02
-    environment:
-      - VIRTUAL_THREADS_ENABLED=true
-      - SERVER_HTTP_CONN_TIMEOUT=500
-      - SERVER_SCHEDULING_THREAD_POOL_SIZE=5
-      - PORT=80
-      - DB_POOL_INITIAL_SIZE=10
-      - DB_POOL_MAX_SIZE=10
-      - DB_POOL_MAX_LIFETIME=2000000
-      - DB_HOST=postgres
-      - DB_DATABASE=rinha
-      - DB_USER=rinha
-      - DB_PASSWORD=rinha
-    expose:
-      - "80"
-
-  nginx:
-    image: nginx:latest
-    hostname: nginx
-    container_name: nginx
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - api01
-      - api02
-    ports:
-      - "9999:9999"
-    deploy:
-      resources:
-        limits:
-          cpus: "0.30"
-          memory: 500MB
+#  api01: &api
+#    image: thalessantanna/customer:latest
+#    hostname: api01
+#    container_name: api01
+#    environment:
+#      - VIRTUAL_THREADS_ENABLED=true
+#      - SERVER_HTTP_CONN_TIMEOUT=500
+#      - SERVER_SCHEDULING_THREAD_POOL_SIZE=5
+#      - PORT=80
+#      - DB_POOL_INITIAL_SIZE=10
+#      - DB_POOL_MAX_SIZE=10
+#      - DB_POOL_MAX_LIFETIME=2000000
+#      - DB_HOST=postgres
+#      - DB_DATABASE=rinha
+#      - DB_USER=rinha
+#      - DB_PASSWORD=rinha
+#    expose:
+#      - "80"
+#    depends_on:
+#      - postgres
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: "0.35"
+#          memory: 500MB
+#
+#  api02:
+#    <<: *api
+#    hostname: api02
+#    container_name: api02
+#    environment:
+#      - VIRTUAL_THREADS_ENABLED=true
+#      - SERVER_HTTP_CONN_TIMEOUT=500
+#      - SERVER_SCHEDULING_THREAD_POOL_SIZE=5
+#      - PORT=80
+#      - DB_POOL_INITIAL_SIZE=10
+#      - DB_POOL_MAX_SIZE=10
+#      - DB_POOL_MAX_LIFETIME=2000000
+#      - DB_HOST=postgres
+#      - DB_DATABASE=rinha
+#      - DB_USER=rinha
+#      - DB_PASSWORD=rinha
+#    expose:
+#      - "80"
+#
+#  nginx:
+#    image: nginx:latest
+#    hostname: nginx
+#    container_name: nginx
+#    volumes:
+#      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+#    depends_on:
+#      - api01
+#      - api02
+#    ports:
+#      - "9999:9999"
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: "0.30"
+#          memory: 500MB
 
 networks:
   default:

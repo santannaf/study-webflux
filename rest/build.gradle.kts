@@ -8,17 +8,25 @@ plugins {
 
 group = "santannaf.customer.rest"
 
+extra["springAiVersion"] = "1.0.0"
+
 dependencyManagement {
     imports {
         mavenBom("io.opentelemetry:opentelemetry-bom:1.48.0")
         mavenBom("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom:2.14.0")
         mavenBom("io.micrometer:micrometer-tracing-bom:1.4.4")
+        mavenBom("org.springframework.ai:spring-ai-bom:${property("springAiVersion")}")
     }
 }
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation(project(":core"))
+
+    // local analyse query
+    implementation("santannaf:analyse-queries:0.0.1")
+    implementation("org.springframework.ai:spring-ai-starter-model-openai")
+    implementation("p6spy:p6spy:3.7.0")
 
     // Metrics
 //    implementation("io.micrometer:micrometer-registry-otlp")

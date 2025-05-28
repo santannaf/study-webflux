@@ -20,7 +20,7 @@ POST http://localhost:8080/pessoas
 Content-Type: application/json
 
 {
-    "apelido" : "josée",
+    "apelido" : "josé",
     "nome" : "José Roberto",
     "nascimento" : "2000-10-01",
     "stack" : ["C#", "Node", "Oracle"]
@@ -28,4 +28,4 @@ Content-Type: application/json
 ###
 
 
-GET http://localhost:9999/pessoas?t=C
+GET http://localhost:8080/pessoas?t=node
