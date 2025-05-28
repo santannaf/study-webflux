@@ -15,7 +15,6 @@ GET http://localhost:8080/benchmark
 GET http://localhost:9999/pessoas/e82b32e8-7931-4d7f-a8c9-787a1446d338
 ###
 
-
 POST http://localhost:8080/pessoas
 Content-Type: application/json
 

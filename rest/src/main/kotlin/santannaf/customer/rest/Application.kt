@@ -6,7 +6,7 @@ import reactor.core.publisher.Hooks
 import santannaf.demo.analyse.queries.analysequeries.annotation.EnableQueryAnalysis
 
 @SpringBootApplication(scanBasePackages = ["santannaf"])
-@EnableQueryAnalysis
+@EnableQueryAnalysis(appName = "customer-webflux")
 class Application
 
 fun main(args: Array<String>) {

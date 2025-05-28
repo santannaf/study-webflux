@@ -60,6 +60,8 @@ subprojects {
         implementation("org.jetbrains.kotlin:kotlin-reflect")
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 
+        runtimeOnly("io.netty:netty-resolver-dns-native-macos:4.1.107.Final:osx-aarch_64")
+
         // Metrics and Traces
 //        implementation("io.micrometer:micrometer-registry-otlp")
 //        implementation("io.micrometer:micrometer-tracing-bridge-otel")
